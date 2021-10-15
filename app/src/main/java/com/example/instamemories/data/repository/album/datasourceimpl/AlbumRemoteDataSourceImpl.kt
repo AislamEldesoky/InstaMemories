@@ -1,7 +1,8 @@
-package com.example.instamemories.data.repository.album
+package com.example.instamemories.data.repository.album.datasourceimpl
 
 import com.example.instamemories.data.api.InstaMemoriesService
 import com.example.instamemories.data.model.album.AlbumsList
+import com.example.instamemories.data.repository.album.datasource.AlbumRemoteDataSource
 import retrofit2.Response
 
 class AlbumRemoteDataSourceImpl(

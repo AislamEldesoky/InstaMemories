@@ -1,4 +1,4 @@
-package com.example.instamemories.data.repository.album
+package com.example.instamemories.data.repository.album.datasource
 
 import com.example.instamemories.data.model.album.AlbumsList
 import com.example.instamemories.data.model.user.UsersList

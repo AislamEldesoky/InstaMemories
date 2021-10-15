@@ -16,5 +16,5 @@ interface InstaMemoriesService {
     suspend fun getUserAlbums(@Query("userId")userId:Int) :Response<AlbumsList>
 
     @GET("photos")
-    suspend fun getAlbumPhoto(@Query("albumId")albumId:Int) :Response<PhotosList>
+    suspend fun getAlbumPhotos(@Query("albumId")albumId:Int) :Response<PhotosList>
 }
