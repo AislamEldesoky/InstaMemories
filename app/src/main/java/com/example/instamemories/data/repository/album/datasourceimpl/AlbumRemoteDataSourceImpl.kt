@@ -11,5 +11,4 @@ class AlbumRemoteDataSourceImpl(
 ) : AlbumRemoteDataSource {
     override suspend fun getAlbums(): Response<AlbumsList> =
         instaMemoriesService.getUserAlbums(userId)
-
 }
