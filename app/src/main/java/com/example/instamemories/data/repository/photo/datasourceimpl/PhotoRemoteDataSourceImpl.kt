@@ -7,8 +7,7 @@ import retrofit2.Response
 
 class PhotoRemoteDataSourceImpl(
     private val instaMemoriesService: InstaMemoriesService,
-    private val albumId: Int
 ) : PhotoRemoteDataSource {
-    override suspend fun getPhotos(): Response<PhotosList> =
+    override suspend fun getPhotos(albumId:Int): Response<PhotosList> =
         instaMemoriesService.getAlbumPhotos(albumId)
 }

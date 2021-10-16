@@ -20,7 +20,7 @@ class App : Application(), Injector {
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(applicationContext))
             .netModule(NetModule(BuildConfig.BASE_URL))
-            .remoteDataModule(RemoteDataModule(4))
+            .remoteDataModule(RemoteDataModule())
             .build()
     }
 

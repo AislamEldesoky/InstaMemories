@@ -16,14 +16,14 @@ class PhotoRepositoryImpl(
     private val photoCacheDataSource: PhotoCacheDataSource
 ) :
     PhotoRepository {
-    override suspend fun getPhotos(): List<Photo> {
-        return getPhotosFromCache()
+    override suspend fun getPhotos(albumId: Int): List<Photo> {
+        return getPhotosFromCache(albumId)
     }
 
-    suspend fun getPhotosFromAPI(): List<Photo> {
+    suspend fun getPhotosFromAPI(albumId:Int): List<Photo> {
         lateinit var photosList: List<Photo>
         try {
-            val response: Response<PhotosList> = photoRemoteDataSource.getPhotos()
+            val response: Response<PhotosList> = photoRemoteDataSource.getPhotos(albumId)
             val body = response.body()
             if (body != null) {
                 photosList = body
@@ -34,7 +34,7 @@ class PhotoRepositoryImpl(
         return photosList
     }
 
-    suspend fun getPhotosFromDB(): List<Photo> {
+    suspend fun getPhotosFromDB(albumId: Int): List<Photo> {
         lateinit var photoslist: List<Photo>
         try {
             photoslist = photoLocalDataSource.getPhotosFromDB()
@@ -44,13 +44,13 @@ class PhotoRepositoryImpl(
         if (photoslist.size > 0) {
             return photoslist
         } else {
-            photoslist = getPhotosFromAPI()
+            photoslist = getPhotosFromAPI(albumId)
             photoLocalDataSource.savePhotosToDB(photoslist)
         }
         return photoslist
     }
 
-    suspend fun getPhotosFromCache() : List<Photo>{
+    suspend fun getPhotosFromCache(albumId: Int) : List<Photo>{
 
         lateinit var photoslist: List<Photo>
         try {
@@ -61,7 +61,7 @@ class PhotoRepositoryImpl(
         if (photoslist.size > 0) {
             return photoslist
         } else {
-            photoslist = getPhotosFromDB()
+            photoslist = getPhotosFromDB(albumId)
             photoCacheDataSource.savePhotosToCache(photoslist)
         }
         return photoslist

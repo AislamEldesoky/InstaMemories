@@ -1,5 +1,6 @@
 package com.example.instamemories.presentation.user
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import com.example.instamemories.data.model.album.AlbumsList
 import com.example.instamemories.data.model.user.User
 import com.example.instamemories.databinding.ActivityUserBinding
 import com.example.instamemories.presentation.di.Injector
+import com.example.instamemories.presentation.photo.PhotosActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -49,12 +51,17 @@ class UserActivity : AppCompatActivity() {
                 user = it.get(Math.random().toInt())
                 userLoaded = true
                 displayUserData(user)
+                asyncGetAlbums()
                 Log.i("user", it.get(2).toString())
                 Log.i("user", user.toString())
             }, onError = {
                 Log.i("ERr", it.message.toString())
             })
 
+
+
+    }
+    private fun asyncGetAlbums(){
         if (userLoaded) {
             compositeDisposable2 += userViewModel.getUserAlbums(user.id)!!
                 .subscribeOn(Schedulers.newThread())
@@ -66,12 +73,14 @@ class UserActivity : AppCompatActivity() {
                     Log.i("ERr", it.message.toString())
                 })
         }
-
     }
-
     private fun initRecyclerView(albumsList: AlbumsList) {
         binding.albumRecyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = UserAlbumAdapter()
+        adapter = UserAlbumAdapter(OnClickListener {
+            val intent = Intent(this, PhotosActivity::class.java)
+            intent.putExtra("albumId", it.id)
+            startActivity(intent)
+        })
         binding.albumRecyclerView.adapter = adapter
         displayUserAlbumData(albumsList)
     }

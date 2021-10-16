@@ -61,6 +61,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     //room
     // To use Kotlin annotation processing tool (kapt)

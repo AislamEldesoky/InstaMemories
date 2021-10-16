@@ -5,5 +5,5 @@ import com.example.instamemories.data.model.user.UsersList
 import retrofit2.Response
 
 interface PhotoRemoteDataSource {
-    suspend fun getPhotos() : Response<PhotosList>
+    suspend fun getPhotos(albumId:Int) : Response<PhotosList>
 }

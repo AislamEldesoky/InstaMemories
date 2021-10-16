@@ -12,7 +12,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class RemoteDataModule( private val albumId : Int) {
+class RemoteDataModule() {
 
     @Singleton
     @Provides
@@ -28,6 +28,6 @@ class RemoteDataModule( private val albumId : Int) {
     @Singleton
     @Provides
     fun providePhotoRemoteDataSource(instaMemoriesService: InstaMemoriesService):PhotoRemoteDataSource{
-        return PhotoRemoteDataSourceImpl(instaMemoriesService,albumId)
+        return PhotoRemoteDataSourceImpl(instaMemoriesService)
     }
 }
