@@ -4,28 +4,32 @@ import android.util.Log
 import com.example.instamemories.data.model.user.User
 import com.example.instamemories.data.model.user.UsersList
 import com.example.instamemories.domain.repository.UserRepository
+import io.reactivex.Single
 import retrofit2.Response
 import java.lang.Exception
 
-class UserRepositoryImpl(private val userRemoteDataSource : UserRemoteDataSource) : UserRepository{
+class UserRepositoryImpl(private val userRemoteDataSource: UserRemoteDataSource) : UserRepository {
 
-    override suspend fun getUsers(): List<User> {
+    override fun getUsers(): Single<List<User>> {
         return getUsersFromAPI()
     }
 
 
-    suspend fun getUsersFromAPI() : List<User>{
-        lateinit var usersList : List<User>
+    fun getUsersFromAPI(): Single<List<User>> {
+        lateinit var users: Single<List<User>>
+        // lateinit var user: Single<User>
         try {
-            val response : Response<UsersList> = userRemoteDataSource.getUsers()
-            val body = response.body()
-            if(body!=null){
-                usersList =body
+            val response: Single<List<User>> = userRemoteDataSource.getUsers()
+            Log.i("response", response.toString())
+            val body = response
+            if (body != null) {
+                users = body
+                Log.i("body", body.toString())
             }
-        }catch (exception :Exception){
-            Log.i("Err",exception.message.toString())
+        } catch (exception: Exception) {
+            Log.i("Err", exception.message.toString())
         }
-        return usersList
+        return users
     }
 
 }

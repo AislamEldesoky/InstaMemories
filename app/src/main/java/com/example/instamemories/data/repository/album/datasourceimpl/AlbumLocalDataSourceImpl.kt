@@ -8,17 +8,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AlbumLocalDataSourceImpl (private val albumDao: AlbumDao) : AlbumLocalDataSource {
-    override suspend fun getAlbumsFromDB(): List<Album> {
+    override fun getAlbumsFromDB(userId:Int): List<Album> {
         return albumDao.getAlbums()
     }
 
-    override suspend fun saveAlbumsToDB(albums: List<Album>) {
+    override fun saveAlbumsToDB(albums: List<Album>) {
         CoroutineScope(Dispatchers.IO).launch {
             albumDao.saveAlbums(albums)
         }
     }
 
-    override suspend fun clearAlbumsFromDB() {
+    override fun clearAlbumsFromDB() {
         CoroutineScope(Dispatchers.IO).launch {
             albumDao.deleteAlbums()
         }

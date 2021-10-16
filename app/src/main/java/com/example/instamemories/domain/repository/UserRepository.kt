@@ -1,8 +1,9 @@
 package com.example.instamemories.domain.repository
 
 import com.example.instamemories.data.model.user.User
+import io.reactivex.Single
 
 interface UserRepository {
 
-  suspend fun getUsers():List<User>
+   fun getUsers(): Single<List<User>>
 }

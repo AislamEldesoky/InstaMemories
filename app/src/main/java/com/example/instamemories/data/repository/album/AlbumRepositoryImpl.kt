@@ -7,6 +7,7 @@ import com.example.instamemories.data.repository.album.datasource.AlbumCacheData
 import com.example.instamemories.data.repository.album.datasource.AlbumLocalDataSource
 import com.example.instamemories.data.repository.album.datasource.AlbumRemoteDataSource
 import com.example.instamemories.domain.repository.AlbumRepository
+import io.reactivex.Single
 import retrofit2.Response
 import java.lang.Exception
 
@@ -15,15 +16,15 @@ class AlbumRepositoryImpl(
     private val albumLocalDataSource: AlbumLocalDataSource,
     private val albumCacheDataSource: AlbumCacheDataSource
 ) : AlbumRepository {
-    override suspend fun getAlbums(): List<Album> {
-        return getAlbumsFromAPI()
+    override fun getAlbums(userId: Int): Single<AlbumsList> {
+        return getAlbumsFromAPI(userId)
     }
 
-    suspend fun getAlbumsFromAPI(): List<Album> {
-        lateinit var albumsList: List<Album>
+    fun getAlbumsFromAPI(userId: Int): Single<AlbumsList> {
+        lateinit var albumsList: Single<AlbumsList>
         try {
-            val response: Response<AlbumsList> = albumRemoteDataSource.getAlbums()
-            val body = response.body()
+            val response: Single<AlbumsList> = albumRemoteDataSource.getAlbums(userId)
+            val body = response
             if (body != null) {
                 albumsList = body
             }
@@ -33,34 +34,34 @@ class AlbumRepositoryImpl(
         return albumsList
     }
 
-    suspend fun getAlbumsFromDB(): List<Album> {
+    fun getAlbumsFromDB(userId: Int): List<Album> {
         lateinit var albumsList: List<Album>
         try {
-            albumsList = albumLocalDataSource.getAlbumsFromDB()
+            albumsList = albumLocalDataSource.getAlbumsFromDB(userId)
         } catch (exception: Exception) {
             Log.i("Err", exception.message.toString())
         }
         if (albumsList.size > 0) {
             return albumsList
         } else {
-            albumsList = getAlbumsFromAPI()
+            albumsList = getAlbumsFromAPI(userId) as List<Album>
             albumLocalDataSource.saveAlbumsToDB(albumsList)
         }
         return albumsList
     }
 
-    suspend fun getAlbumsFromCache() : List<Album>{
+    suspend fun getAlbumsFromCache(userId: Int): List<Album> {
 
         lateinit var albumsList: List<Album>
         try {
-            albumsList = albumCacheDataSource.getAlbumsFromCache()
+            albumsList = albumCacheDataSource.getAlbumsFromCache(userId)
         } catch (exception: Exception) {
             Log.i("Err", exception.message.toString())
         }
         if (albumsList.size > 0) {
             return albumsList
         } else {
-            albumsList = getAlbumsFromDB()
+            albumsList = getAlbumsFromDB(userId)
             albumCacheDataSource.saveAlbumsToCache(albumsList)
         }
         return albumsList

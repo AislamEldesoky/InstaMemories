@@ -33,7 +33,7 @@ class RepositoryModule {
     }
     @Singleton
     @Provides
-    fun providePhotoRepository(albumRemoteDataSource: AlbumRemoteDataSource,albumLocalDataSource: AlbumLocalDataSource,albumCacheDataSource: AlbumCacheDataSource): AlbumRepository{
+    fun provideAlbumRepository(albumRemoteDataSource: AlbumRemoteDataSource,albumLocalDataSource: AlbumLocalDataSource,albumCacheDataSource: AlbumCacheDataSource): AlbumRepository{
         return AlbumRepositoryImpl(albumRemoteDataSource,albumLocalDataSource,albumCacheDataSource)
     }
 }

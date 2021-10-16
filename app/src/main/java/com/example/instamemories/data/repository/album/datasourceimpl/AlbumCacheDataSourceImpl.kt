@@ -10,7 +10,7 @@ class AlbumCacheDataSourceImpl : AlbumCacheDataSource {
         albumsList = ArrayList(albums)
     }
 
-    override suspend fun getAlbumsFromCache(): List<Album> {
+    override suspend fun getAlbumsFromCache(userId:Int): List<Album> {
        return albumsList
     }
 }

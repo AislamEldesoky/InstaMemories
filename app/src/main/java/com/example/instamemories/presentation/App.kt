@@ -1,26 +1,34 @@
 package com.example.instamemories.presentation
 
 import android.app.Application
+import android.content.Context
+import com.example.instamemories.BuildConfig
 import com.example.instamemories.presentation.di.Injector
-import com.example.instamemories.presentation.di.core.AppComponent
+import com.example.instamemories.presentation.di.core.*
 import com.example.instamemories.presentation.di.photo.PhotoSubComponent
 import com.example.instamemories.presentation.di.user.UserSubComponent
+import dagger.Component
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.DaggerApplication
 import dagger.internal.DaggerCollections
 
 class App : Application(), Injector {
-    private lateinit var appComponent : AppComponent
+    private lateinit var appComponent: AppComponent
+    private  val userId : Int = 0
     override fun onCreate() {
         super.onCreate()
-       // appComponent = DaggerApp
+        appComponent = DaggerAppComponent.builder()
+            .appModule(AppModule(applicationContext))
+            .netModule(NetModule(BuildConfig.BASE_URL))
+            .remoteDataModule(RemoteDataModule(4))
+            .build()
     }
 
     override fun createUserSubComponent(): UserSubComponent {
-        TODO("Not yet implemented")
+        return appComponent.userSubComponent().create()
     }
 
     override fun createPhotoSubComponent(): PhotoSubComponent {
-        TODO("Not yet implemented")
+        return appComponent.photoSubComponent().create()
     }
 }

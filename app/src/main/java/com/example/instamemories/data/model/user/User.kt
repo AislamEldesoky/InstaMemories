@@ -5,7 +5,7 @@ data class User(
     @SerializedName("address")
     val address: Address,
     @SerializedName("id")
-    val id: Int,
+    var id: Int,
     @SerializedName("name")
     val name: String,
     @SerializedName("phone")

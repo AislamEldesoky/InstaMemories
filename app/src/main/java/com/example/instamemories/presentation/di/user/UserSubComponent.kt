@@ -7,7 +7,6 @@ import dagger.Subcomponent
 @Subcomponent(modules = [UserModule::class])
 interface UserSubComponent {
 
-
     fun inject(userActivity: UserActivity)
     @Subcomponent.Factory
     interface factory{

@@ -10,11 +10,11 @@ import com.example.instamemories.data.model.album.Album
 interface AlbumDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveAlbums(albums: List<Album>)
+     fun saveAlbums(albums: List<Album>)
 
     @Query("DELETE FROM user_album")
-    suspend fun deleteAlbums()
+     fun deleteAlbums()
 
     @Query("SELECT * FROM user_album")
-    suspend fun getAlbums():List<Album>
+     fun getAlbums():List<Album>
 }
